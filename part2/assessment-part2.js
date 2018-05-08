@@ -34,20 +34,28 @@
 // In the second .then function you use, assign the third user object
 // to the variable 'thirdUser' (previously declared) and then return the tenth user object.
 
-var firstUser = 'don\'t touch this string!';
-var thirdUser = 'don\'t touch this string, either!';
+var firstUser = "don't touch this string!";
+var thirdUser = "don't touch this string, either!";
 
 function noWeakLink() {
-
-  return $http({
-    method: 'GET',
-    url: '/api/users'
-  })
-  // CODE HERE...
-
+  return (
+    $http({
+      method: "GET",
+      url: "/api/users"
+    })
+      // CODE HERE...
+      .then(response => {
+        console.log(response);
+        firstUser = response.data[0];
+        return response;
+      })
+      .then(res => {
+        console.log(res);
+        thirdUser = res.data[2];
+        return res.data[9];
+      })
+  );
 }
-
-
 
 // *************
 // * PROBLEM 2 *
@@ -67,16 +75,13 @@ function noWeakLink() {
 // 'My name is Horton and I am very heavy!' (The above instructions should make this work.  No code needed for this paragraph)
 
 var elephant = {
-  name: 'Horton'
-}
+  name: "Horton"
+};
 function large() {
-
-  return 'My name is ' + this.name + ' and I am very heavy!'
+  return "My name is " + this.name + " and I am very heavy!";
 }
 // CODE HERE...
-
-
-
+var boundToElephant = large.bind(elephant);
 // *************
 // * PROBLEM 3 *
 // *************
@@ -88,9 +93,9 @@ function large() {
 // and return the bound function.
 
 // CODE HERE...
-
-
-
+function deathStar(capacity, crew) {
+  return capacity.bind(crew);
+}
 // *************
 // * PROBLEM 4 *
 // *************
@@ -104,8 +109,11 @@ function large() {
 
 // CODE HERE...
 
-
-
+function accountingOffice(assets) {
+  return function(liabilities) {
+    return assets + liabilities;
+  };
+}
 // *************
 // * PROBLEM 5 *
 // *************
@@ -129,7 +137,16 @@ function large() {
 
 // CODE HERE...
 
-
+function forgetter(name) {
+  var array = [];
+  return function rememberall(item) {
+    array.push(item);
+    return {
+      name: name,
+      remember: array
+    };
+  };
+}
 
 // *************
 // * PROBLEM 6 *
@@ -156,3 +173,37 @@ function large() {
 // NOTE: Neither hunger nor danger should be able to exceed 100 or drop below 0.
 
 // CODE HERE...
+function frodo(startingHungerValue, startingDangerValue) {
+  var startingHungerValue = startingHungerValue;
+  var startingDangerValue = startingDangerValue;
+  return {
+    dinnerOverFire: () => {
+      (startingHungerValue -= 25), (startingDangerValue += 40);
+      startingDangerValue > 100
+        ? (startingDangerValue = 100)
+        : startingDangerValue < 0
+          ? (startingDangerValue = 0)
+          : true;
+      startingHungerValue > 100
+        ? (startingHungerValue = 100)
+        : startingHungerValue < 0
+          ? (startingHungerValue = 0)
+          : true;
+      return { hunger: startingHungerValue, danger: startingDangerValue };
+    },
+    hidingInBush: () => {
+      (startingHungerValue += 35), (startingDangerValue -= 20);
+      startingDangerValue > 100
+        ? (startingDangerValue = 100)
+        : startingDangerValue < 0
+          ? (startingDangerValue = 0)
+          : true;
+      startingHungerValue > 100
+        ? (startingHungerValue = 100)
+        : startingHungerValue < 0
+          ? (startingHungerValue = 0)
+          : true;
+      return { hunger: startingHungerValue, danger: startingDangerValue };
+    }
+  };
+}
